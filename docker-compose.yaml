@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    volumes:
+      - "./api/src:/app/api/src:rw"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+
+  auth-service:
+    build:
+      context: ./auth_service
+      dockerfile: Dockerfile
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    volumes:
+      - "./auth_service/src:/app/auth_service/src:rw"
+    depends_on:
+      - redis
+
+  save-service:
+    build:
+      context: ./save_service
+      dockerfile: Dockerfile
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    volumes:
+      - "./save_service/src:/app/save_service/src:rw"
+    depends_on:
+      - redis
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
