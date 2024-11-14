@@ -1,0 +1,4 @@
+venv
+api/node_modules
+auth_service/node_modules
+save_service/node_modules
